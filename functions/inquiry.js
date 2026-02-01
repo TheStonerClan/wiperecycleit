@@ -104,16 +104,20 @@ Reply directly to this email to contact the requester.
       attachments
     };
 
-    const resp = await fetch("https://api.mailchannels.net/tx/v1/send", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(mailPayload)
-    });
+const resp = await fetch("https://api.mailchannels.net/tx/v1/send", {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify(mailPayload)
+});
 
-    if (!resp.ok) {
-      const errText = await resp.text();
-      return new Response(`Email failed: ${errText}`, { status: 502 });
-    }
+const respText = await resp.text();
+console.log("MailChannels status:", resp.status);
+console.log("MailChannels response:", respText);
+
+if (!resp.ok) {
+  return new Response(`Email failed: ${respText}`, { status: 502 });
+}
+
 
     return new Response("OK", {
       status: 200,
