@@ -1,40 +1,48 @@
-export async function onRequestPost(context) {
+export async function onRequest(context) {
+  // Handle preflight (optional, but solid)
+  if (context.request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type"
+      }
+    });
+  }
+
+  if (context.request.method !== "POST") {
+    return new Response("Method Not Allowed", { status: 405 });
+  }
+
   try {
-    const req = context.request;
+    const formData = await context.request.formData();
 
-    // Parse multipart form data
-    const formData = await req.formData();
-
-    // Required fields
     const companyName = String(formData.get("companyName") || "").trim();
     const contactName = String(formData.get("contactName") || "").trim();
     const pickupCityState = String(formData.get("pickupCityState") || "").trim();
     const email = String(formData.get("email") || "").trim();
     const phone = String(formData.get("phone") || "").trim();
-
-    // Optional fields
     const notes = String(formData.get("notes") || "").trim();
 
-    // Optional file upload
     const file = formData.get("inventoryFile");
 
-    // Validate required fields
     if (!companyName || !contactName || !pickupCityState || !email || !phone) {
       return new Response("Missing required fields", { status: 400 });
     }
 
-    // Email routing variables
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!emailOk) {
+      return new Response("Invalid email address", { status: 400 });
+    }
+
     const toEmail = context.env.TO_EMAIL || "sales@wipe-recycle.com";
     const fromEmail = context.env.FROM_EMAIL || "sales@wipe-recycle.com";
 
-    // -----------------------------
-    // Optional Attachment Handling
-    // -----------------------------
     let attachments = [];
 
     if (file && file instanceof File && file.size > 0) {
-      const maxBytes = 8 * 1024 * 1024; // 8MB limit
-
+      const maxBytes = 8 * 1024 * 1024;
       if (file.size > maxBytes) {
         return new Response(
           "File too large (max 8MB). Please email it directly to sales@wipe-recycle.com instead.",
@@ -42,13 +50,14 @@ export async function onRequestPost(context) {
         );
       }
 
-      // Convert file to base64
       const arrayBuffer = await file.arrayBuffer();
       const bytes = new Uint8Array(arrayBuffer);
 
+      // base64 encode safely in chunks
       let binary = "";
-      for (let i = 0; i < bytes.length; i++) {
-        binary += String.fromCharCode(bytes[i]);
+      const chunkSize = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunkSize) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
       }
 
       attachments.push({
@@ -59,9 +68,6 @@ export async function onRequestPost(context) {
       });
     }
 
-    // -----------------------------
-    // Build Email Content
-    // -----------------------------
     const subject = `New Equipment Inquiry: ${companyName} (${pickupCityState})`;
 
     const fileStatus =
@@ -69,8 +75,8 @@ export async function onRequestPost(context) {
         ? `${file.name} (${Math.round(file.size / 1024)} KB)`
         : "(none provided)";
 
-    const textBody = `
-New equipment inquiry received from wipe-recycle.com
+    const textBody =
+`New equipment inquiry received from wipe-recycle.com
 
 ----------------------------------------
 Company Name:       ${companyName}
@@ -78,7 +84,6 @@ Contact Name:       ${contactName}
 Pickup Location:    ${pickupCityState}
 Email:              ${email}
 Phone:              ${phone}
-
 Inventory Upload:   ${fileStatus}
 
 Notes:
@@ -90,41 +95,18 @@ Reply directly to this email to contact the requester.
 — Wipe & Recycle IT
 `;
 
-    // -----------------------------
-    // MailChannels Payload
-    // -----------------------------
     const mailPayload = {
-      personalizations: [
-        {
-          to: [{ email: toEmail }]
-        }
-      ],
-      from: {
-        email: fromEmail,
-        name: "wipe-recycle.com"
-      },
-      reply_to: {
-        email: email,
-        name: contactName
-      },
-      subject: subject,
-      content: [
-        {
-          type: "text/plain",
-          value: textBody
-        }
-      ],
-      attachments: attachments
+      personalizations: [{ to: [{ email: toEmail }] }],
+      from: { email: fromEmail, name: "Wipe & Recycle IT" },
+      reply_to: { email, name: contactName },
+      subject,
+      content: [{ type: "text/plain", value: textBody }],
+      attachments
     };
 
-    // -----------------------------
-    // Send via MailChannels API
-    // -----------------------------
     const resp = await fetch("https://api.mailchannels.net/tx/v1/send", {
       method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
+      headers: { "content-type": "application/json" },
       body: JSON.stringify(mailPayload)
     });
 
@@ -133,8 +115,10 @@ Reply directly to this email to contact the requester.
       return new Response(`Email failed: ${errText}`, { status: 502 });
     }
 
-    return new Response("OK", { status: 200 });
-
+    return new Response("OK", {
+      status: 200,
+      headers: { "Access-Control-Allow-Origin": "*" }
+    });
   } catch (err) {
     return new Response("Server error", { status: 500 });
   }
