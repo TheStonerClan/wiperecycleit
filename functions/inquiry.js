@@ -106,7 +106,10 @@ Reply directly to this email to contact the requester.
 
 const resp = await fetch("https://api.mailchannels.net/tx/v1/send", {
   method: "POST",
-  headers: { "content-type": "application/json" },
+  headers: {
+  "content-type": "application/json",
+  "X-Api-Key": context.env.MAILCHANNELS_API_KEY
+},
   body: JSON.stringify(mailPayload)
 });
 
