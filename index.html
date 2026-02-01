@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wipe & Recycle IT | Secure Electronics Buyback & Resale</title>
+  <meta name="description" content="Electronics buyback with secure data sanitization aligned to NIST SP 800-88. Fast pickup coordination, prompt processing, and top-dollar offers." />
+  <link rel="icon" href="/assets/favicon.png" />
+  <style>
+    :root{
+      --bg:#071b1b;
+      --card:#0b2525;
+      --teal:#0f3a3a;
+      --gold:#d6c06a;
+      --text:#e9f3f2;
+      --muted:#b8c7c5;
+      --line:rgba(255,255,255,.10);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      background: radial-gradient(1200px 600px at 10% 0%, #0f3a3a 0%, var(--bg) 55%, #041111 100%);
+      color:var(--text);
+      line-height:1.45;
+    }
+    a{color:var(--gold);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1120px;margin:0 auto;padding:28px 18px 64px}
+    header{
+      display:flex;align-items:center;justify-content:space-between;gap:18px;
+      padding:12px 0 22px;border-bottom:1px solid var(--line);
+    }
+    .brand{display:flex;gap:14px;align-items:center}
+    .brand img{
+  	width:46px;
+  	height:46px;
+  	border-radius:12px;
+  	object-fit:contain;
+  	background:transparent;
+    }
+    .brand h1{font-size:16px;margin:0;letter-spacing:.8px}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
+    nav{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}
+    nav a{font-size:14px;color:var(--text);opacity:.9}
+    nav a:hover{opacity:1}
+    .hero{
+      display:grid;grid-template-columns:1.2fr .8fr;gap:22px;
+      padding:26px 0 8px;
+      align-items:stretch;
+    }
+    .heroCard{
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:22px;
+      box-shadow:var(--shadow);
+    }
+    .heroLogo{
+  	width:100%;
+ 	max-height:360px;
+  	object-fit:contain;
+
+  	/* No white box */
+  	background:transparent;
+
+  	/* Give it a clean “mounted” look */
+  	padding:18px;
+  	border-radius:18px;
+  	border:1px solid var(--line);
+
+  	/* Subtle contrast backdrop so gold pops */
+  	background: radial-gradient(
+    		700px 300px at 50% 20%,
+    		rgba(15,58,58,0.35),
+    		rgba(0,0,0,0.10)
+  	);
+    }
+    .kicker{color:var(--gold);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:12px}
+    .hero h2{margin:10px 0 10px;font-size:40px;line-height:1.08}
+    .hero p{margin:0;color:var(--muted);font-size:16px;max-width:60ch}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .badge{
+      border:1px solid var(--line);border-radius:999px;padding:8px 12px;
+      background:rgba(0,0,0,.18);font-size:13px;color:var(--text)
+    }
+    .statGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .stat{
+      background:rgba(0,0,0,.18);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+    }
+    .stat b{display:block;font-size:24px;color:var(--gold)}
+    .stat span{color:var(--muted);font-size:13px}
+    .section{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    .card{
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:20px;
+    }
+    .card h3{margin:0 0 10px;font-size:18px}
+    .card ul{margin:10px 0 0;padding-left:18px;color:var(--muted)}
+    .card li{margin:8px 0}
+    .formWrap{margin-top:22px}
+    form{
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:20px;
+    }
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    label{display:block;font-size:13px;color:var(--muted);margin:0 0 6px}
+    input, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.25);
+      color:var(--text);
+      outline:none;
+    }
+    input:focus, textarea:focus{border-color:rgba(214,192,106,.55)}
+    textarea{min-height:96px;resize:vertical}
+    .full{grid-column:1 / -1}
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}
+    button{
+      border:0;
+      background:linear-gradient(180deg, #e8d27b, var(--gold));
+      color:#132525;
+      padding:12px 16px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    button:disabled{opacity:.6;cursor:not-allowed}
+    .note{color:var(--muted);font-size:13px}
+    .success, .error{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      display:none;
+    }
+    .success{background:rgba(46, 160, 90, .12)}
+    .error{background:rgba(220, 80, 80, .12)}
+    footer{
+      margin-top:34px;
+      padding-top:18px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    @media (max-width: 920px){
+      .hero{grid-template-columns:1fr}
+      .section{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img src="/assets/favicon.png" alt="Wipe & Recycle IT" />
+        <div>
+          <h1>WIPE &amp; RECYCLE IT</h1>
+          <p>Secure Electronics Buyback • Data Sanitization • Resale</p>
+        </div>
+      </div>
+      <nav>
+        <a href="#inquiry">Sell Your Equipment</a>
+        <a href="#process">Process</a>
+        <a href="#trust">Security</a>
+        <a href="/privacy.html">Privacy Policy</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="heroCard">
+        <div class="kicker">Fast, secure, and professional</div>
+        <h2>Top-dollar offers for business &amp; consumer IT equipment.</h2>
+        <p>
+          We purchase electronics promptly, coordinate pickup details quickly, and handle data sanitization
+          using processes aligned with <strong>NIST SP 800-88</strong> to reduce the risk of recoverable data
+          prior to resale or reuse.
+        </p>
+
+        <div class="badges">
+          <div class="badge">Prompt response • sales@wipe-recycle.com</div>
+          <div class="badge">Pickup coordination (City/State)</div>
+          <div class="badge">Secure handling &amp; documented process</div>
+        </div>
+
+        <div class="statGrid" aria-label="Company stats">
+          <div class="stat">
+            <b>1,153</b>
+            <span>Items sold (lifetime)</span>
+          </div>
+          <div class="stat">
+            <b>Quick Turnaround</b>
+            <span>Quote → pickup coordination → processing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="heroCard">
+        <img src="/assets/logo.png"
+     		alt="Wipe & Recycle IT logo"
+     		class="heroLogo" />
+        <div class="row" style="margin-top:14px">
+          <a class="badge" href="https://wipe-recycle-it.myshopify.com" target="_blank" rel="noopener">View Inventory (Shopify)</a>
+          <a class="badge" href="https://ebay.us/m/ONwwaU" target="_blank" rel="noopener">Shop on eBay</a>
+        </div>
+        <p class="note" style="margin-top:12px">
+          For all inquiries: <a href="mailto:sales@wipe-recycle.com">sales@wipe-recycle.com</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="process" class="section">
+      <div class="card">
+        <h3>How it works</h3>
+        <ul>
+          <li><strong>Submit the form</strong> with pickup location + an inventory list.</li>
+          <li><strong>We respond fast</strong> to confirm details and provide a purchase path.</li>
+          <li><strong>Secure handling</strong> and data sanitization aligned with NIST guidance.</li>
+          <li><strong>Prompt completion</strong>—we keep the process moving and transparent.</li>
+        </ul>
+      </div>
+
+      <div id="trust" class="card">
+        <h3>Security &amp; data sanitization</h3>
+        <p class="note">
+          We follow a documented process aligned with NIST SP 800-88 (and other widely accepted best practices)
+          to reduce the likelihood of recoverable data on devices intended for reuse or resale.
+        </p>
+        <ul>
+          <li>Asset intake + condition capture</li>
+          <li>Sanitization method selection by device type/media</li>
+          <li>Verification steps prior to resale workflow</li>
+          <li>Privacy-first handling of any information you submit</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="inquiry" class="formWrap">
+      <h3 style="margin:0 0 12px">Sell your equipment — request a quote / pickup</h3>
+      <form id="buybackForm" enctype="multipart/form-data">
+        <div class="grid">
+          <div>
+            <label for="companyName">Company Name</label>
+            <input id="companyName" name="companyName" required />
+          </div>
+          <div>
+            <label for="contactName">Contact Name</label>
+            <input id="contactName" name="contactName" required />
+          </div>
+
+          <div>
+            <label for="pickupCityState">City/State of pickup</label>
+            <input id="pickupCityState" name="pickupCityState" placeholder="e.g., Austin, TX" required />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required />
+          </div>
+
+          <div>
+            <label for="phone">Phone Number</label>
+            <input id="phone" name="phone" type="tel" required />
+          </div>
+
+          <div>
+            <label for="inventoryFile">Upload Inventory List (CSV/XLSX/PDF)</label>
+<input id="inventoryFile" name="inventoryFile" type="file"
+accept=".csv,.xlsx,.xls,.pdf,.txt" />
+          </div>
+
+          <div class="full">
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" name="notes" placeholder="Pickup constraints, preferred timing, or details about the equipment"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="submitBtn" type="submit">Send Inquiry</button>
+          <span class="note">This submits directly to sales@wipe-recycle.com.</span>
+        </div>
+
+        <div id="ok" class="success">Received. We’ll respond as soon as possible.</div>
+        <div id="bad" class="error">Something failed. Please email sales@wipe-recycle.com and attach your inventory list.</div>
+
+        <p class="note" style="margin-top:14px">
+          By submitting this form, you agree to our <a href="/privacy.html">Privacy Policy</a>.
+        </p>
+      </form>
+    </section>
+
+    <footer>
+      <div>
+        <div><strong>Wipe &amp; Recycle IT</strong> — Secure Electronics Buyback &amp; Resale</div>
+        <div>All inquiries: <a href="mailto:sales@wipe-recycle.com">sales@wipe-recycle.com</a></div>
+      </div>
+      <div style="max-width:520px">
+        <div><strong>Disclaimer:</strong> Wipe &amp; Recycle IT is a DBA of The Stoner Clan, LLC.</div>
+        <div class="note">References to NIST and other guidance reflect process alignment and do not imply third-party certification.</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const form = document.getElementById('buybackForm');
+    const btn = document.getElementById('submitBtn');
+    const ok = document.getElementById('ok');
+    const bad = document.getElementById('bad');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      ok.style.display = 'none';
+      bad.style.display = 'none';
+      btn.disabled = true;
+
+      try {
+        const fd = new FormData(form);
+        const res = await fetch('/inquiry', { method: 'POST', body: fd });
+        if (!res.ok) throw new Error('Request failed');
+        ok.style.display = 'block';
+        form.reset();
+      } catch (err) {
+        bad.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
